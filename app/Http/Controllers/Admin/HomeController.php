@@ -14,8 +14,10 @@ class HomeController extends Controller
     public function index()
     {
         $data['sports'] = Sport::active()->get()->count();
-        $data['users']= User::all()->count();
-        $data['subUsers'] = DB::table('sport_user')->where('status',1)->count();
-        return Inertia::render('Admin/Dashboard',['dash'=>$data]);
+        $data['users'] = User::all()->count();
+        $data['subUsers'] = DB::table('sport_user')->where('status', 1)->count();
+        return Inertia::render('Admin/Dashboard', [
+            'dash' => $data
+        ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SportRequest;
 use App\Models\Sport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,55 +13,50 @@ class SportController extends Controller
 {
     public function index()
     {
-        $sports = Sport::with('users')->when(request()->input('search'), function ($query, $search) {
-            $query->where('title', 'Like', '%' . $search . '%');
-        })->active()->get();
-        return Inertia::render('Admin/Sports/Index', ['sports' => $sports, 'filters' => request()->only(['search'])]);
+        return Inertia::render('Admin/Sports/Index', [
+            'sports' => Sport::with('users')->when(request()->input('search'), function ($query, $search) {
+                $query->where('title', 'Like', '%' . $search . '%');
+            })->active()->get(),
+            'filters' => request()->only(['search'])
+        ]);
     }
 
-    public function store(Request $request)
+    public function store(SportRequest $request)
     {
-        $data = $request->validate([
-            'title' => 'required',
-            'description' => 'required'
-        ]);
+        $data = $request->validated();
         $data['user_id'] = Auth::user()->id;
         Sport::create($data);
+
         return redirect()->route('admin.sports.index');
     }
 
-    public function show(Request $request, $id)
+    public function show(Sport $sport)
     {
-        $sport = Sport::find($id);
         return response()->json($sport);
     }
 
-    public function update(Request $request, $id)
+    public function update(Sport $sport, SportRequest $request)
     {
-        $data = $request->validate([
-            'title' => 'required',
-            'description' => 'required'
-        ]);
+        $data = $request->validated();
         $data['user_id'] = Auth::user()->id;
-        $sport = Sport::find($id);
         $sport->update($data);
+
         return redirect()->route('admin.sports.index');
     }
 
-    public function delete($id)
+    public function delete(Sport $sport)
     {
-        $sport = Sport::find($id);
         $sport->status = 0;
         $sport->Save();
+
         return redirect()->route('admin.sports.index');
     }
 
-    public function users($id)
+    public function users(Sport $sport)
     {
-        $sport = Sport::find($id);
         $users = $sport->Users()->get();
-        return response()->json($users);
 
+        return response()->json($users);
     }
 
 

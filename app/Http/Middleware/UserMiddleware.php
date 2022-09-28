@@ -18,9 +18,9 @@ class UserMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->role == User::RoleUser){
+        if(!Auth::user()->role){
             return $next($request);
         }
-        return redirect()->route('w')->withErrors('Access Denied');
+        return redirect()->route('welcome')->withErrors('Access Denied');
     }
 }

@@ -17,8 +17,6 @@ class User extends Authenticatable
     */
     use HasApiTokens, HasFactory, Notifiable;
 
-    const RoleAdmin = 1;
-    const RoleUser = 0;
     protected $fillable = [
         'name',
         'email',

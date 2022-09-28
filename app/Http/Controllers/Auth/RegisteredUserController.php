@@ -27,7 +27,7 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -46,15 +46,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'role' => User::RoleUser,
         ]);
-
         event(new Registered($user));
-
         Auth::login($user);
-
-        if($user->role){
-            return redirect()->route('admin.dashboard');
-        }else{
-            return redirect()->route('user.dashboard');
-        }
     }
 }
