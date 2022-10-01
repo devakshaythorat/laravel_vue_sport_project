@@ -54,29 +54,48 @@
         </div>
     </AuthenticatedLayout>
 </template>
-<script>
+<!--<script>-->
+<!--import AuthenticatedLayout from '@/Layouts/User/AuthenticatedLayout.vue';-->
+<!--import {Head} from '@inertiajs/inertia-vue3';-->
+<!--import {Inertia} from "@inertiajs/inertia";-->
+<!--import {createToaster} from "@meforma/vue-toaster";-->
+
+<!--export default {-->
+<!--    components: {-->
+<!--        AuthenticatedLayout, Head-->
+<!--    },-->
+<!--    props: {sports: Object},-->
+<!--    setup() {-->
+<!--        const toaster = createToaster({ /* options */});-->
+<!--        const sub = (id) => {-->
+<!--            Inertia.get('/user/subscribe/' + id);-->
+<!--            toaster.success(`Sport Subscribed Successfully`, {position: "top-right"});-->
+<!--        }-->
+<!--        const unsub = (id) => {-->
+<!--            Inertia.get('/user/unsubscribe/' + id);-->
+<!--            toaster.error(`Sport Unsubscribed Successfully`, {position: "top-right"});-->
+<!--        }-->
+<!--        return {-->
+<!--            sub, unsub-->
+<!--        }-->
+<!--    }-->
+<!--}-->
+<!--</script>-->
+
+<script setup>
 import AuthenticatedLayout from '@/Layouts/User/AuthenticatedLayout.vue';
 import {Head} from '@inertiajs/inertia-vue3';
 import {Inertia} from "@inertiajs/inertia";
-import { createToaster } from "@meforma/vue-toaster";
-export default {
-    components: {
-        AuthenticatedLayout, Head
-    },
-    props: {sports: Object},
-    setup() {
-        const toaster = createToaster({ /* options */ });
-        const sub = (id) => {
-            Inertia.get('/user/subscribe/' + id);
-            toaster.success(`Sport Subscribed Successfully`,{position:"top-right"});
-        }
-        const unsub = (id) => {
-            Inertia.get('/user/unsubscribe/' + id);
-            toaster.error(`Sport Unsubscribed Successfully`,{position:"top-right"});
-        }
-        return {
-            sub, unsub
-        }
-    }
+import {createToaster} from "@meforma/vue-toaster";
+
+const props = defineProps({sports: Object});
+const toaster = createToaster({ /* options */});
+const sub = (id) => {
+    Inertia.get('/user/subscribe/' + id);
+    toaster.success(`Sport Subscribed Successfully`, {position: "top-right"});
+}
+const unsub = (id) => {
+    Inertia.get('/user/unsubscribe/' + id);
+    toaster.error(`Sport Unsubscribed Successfully`, {position: "top-right"});
 }
 </script>

@@ -10,20 +10,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Bus;
 
 class HomeController extends Controller
 {
     public function index()
     {
         return Inertia::render('User/Dashboard', [
-            'sports' => Sport::with('users')->active()->get()
+            'sports' => Sport::query()->with('users')->active()->get()
         ]);
     }
 
     public function subscribe(Sport $sport)
     {
         $sport->users()->attach(Auth::user()->id);
-        dispatch(new SportSubscription($sport,Auth::user()->email));
+        Bus::dispatch(new SportSubscription($sport, Auth::user()->email));
 
         return redirect()->route('user.dashboard');
     }

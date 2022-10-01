@@ -136,9 +136,10 @@
             </div>
         </div>
 
-        <div class=" z-40 fixed top-0 left-0 bg-gray-700/50 w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-             v-if="listActive" id="exampleModalScrollable" tabindex="-1" aria-labelledby="exampleModalScrollableLabel"
-             aria-hidden="true">
+        <div
+            class=" z-40 fixed top-0 left-0 bg-gray-700/50 w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+            v-if="listActive" id="exampleModalScrollable" tabindex="-1" aria-labelledby="exampleModalScrollableLabel"
+            aria-hidden="true">
             <div class="sm:h-[calc(100%-3rem)] max-w-lg my-6 mx-auto relative w-auto pointer-events-none">
                 <div
                     class="max-h-full overflow-hidden border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
@@ -174,91 +175,161 @@
         </div>
     </AuthenticatedLayout>
 </template>
-<script>
+<!--<script>-->
+<!--import AuthenticatedLayout from '@/Layouts/Admin/AuthenticatedLayout.vue';-->
+<!--import {Head} from '@inertiajs/inertia-vue3';-->
+<!--import {Inertia} from '@inertiajs/inertia';-->
+<!--import {onMounted, ref, watch} from 'vue';-->
+<!--import {createToaster} from "@meforma/vue-toaster";-->
+
+
+<!--export default {-->
+<!--    components: {-->
+<!--        AuthenticatedLayout,-->
+<!--        Head-->
+<!--    },-->
+<!--    props: {-->
+<!--        sports: Object,-->
+<!--        filters: Object-->
+<!--    },-->
+<!--    setup(props) {-->
+<!--        const toaster = createToaster({ /* options */});-->
+<!--        const sportId = ref(null);-->
+<!--        const formActive = ref(false);-->
+<!--        const listActive = ref(false);-->
+<!--        const formContent = ref({})-->
+<!--        const search = ref(props.filters.search);-->
+<!--        const users = ref([]);-->
+<!--        const toggleForm = (id = null) => {-->
+<!--            formActive.value = !formActive.value;-->
+<!--            sportId.value = null;-->
+<!--            formContent.value = {};-->
+<!--            if (id) {-->
+<!--                sportId.value = id;-->
+<!--                fetch('/admin/sports/' + id).then(res => res.json()).then(data => {-->
+<!--                    formContent.value = data;-->
+<!--                })-->
+<!--            }-->
+<!--        }-->
+<!--        const addSport = () => {-->
+<!--            if (formContent.value === {}) {-->
+<!--                return false;-->
+<!--            }-->
+<!--            if (formContent.value) {-->
+<!--                Inertia.post('/admin/sports', formContent.value,);-->
+<!--                formContent.value = {};-->
+<!--                formActive.value = false;-->
+<!--                toaster.success(`Sport Added Successfully`, {position: "top-right"});-->
+<!--            }-->
+<!--        }-->
+<!--        const updateSport = () => {-->
+<!--            if (formContent.value === {}) {-->
+<!--                return false;-->
+<!--            }-->
+<!--            Inertia.put('/admin/sports/' + sportId.value, formContent.value, {preserveState: true});-->
+<!--            formContent.value = {};-->
+<!--            formActive.value = false;-->
+<!--            sportId.value = null;-->
+<!--            toaster.info(`Sport Updated Successfully`, {position: "top-right"});-->
+<!--        }-->
+<!--        const deleteSport = id => {-->
+<!--            Inertia.delete('/admin/sports/' + id);-->
+<!--            toaster.error(`Sport Deleted Successfully`, {position: "top-right"});-->
+<!--        }-->
+<!--        const closeList = () => {-->
+<!--            listActive.value = false;-->
+<!--        }-->
+<!--        const showUser = id => {-->
+<!--            fetch('/admin/sports/' + id).then(res => res.json()).then(data => {-->
+<!--                users.value = data;-->
+<!--                listActive.value = true;-->
+<!--            })-->
+<!--        }-->
+<!--        watch(search, value => {-->
+<!--            Inertia.get('/admin/sports', {search: value}, {preserveState: true, replace: true})-->
+<!--        })-->
+<!--        return {-->
+<!--            formActive,-->
+<!--            toggleForm,-->
+<!--            deleteSport,-->
+<!--            addSport,-->
+<!--            sportId,-->
+<!--            formContent,-->
+<!--            updateSport,-->
+<!--            search,-->
+<!--            showUser,-->
+<!--            users,-->
+<!--            listActive,-->
+<!--            closeList-->
+<!--        }-->
+<!--    }-->
+<!--}-->
+<!--</script>-->
+
+<script setup>
 import AuthenticatedLayout from '@/Layouts/Admin/AuthenticatedLayout.vue';
 import {Head} from '@inertiajs/inertia-vue3';
 import {Inertia} from '@inertiajs/inertia';
 import {onMounted, ref, watch} from 'vue';
-import { createToaster } from "@meforma/vue-toaster";
-export default {
-    components: {
-        AuthenticatedLayout,
-        Head
-    },
-    props: {
-        sports: Object,
-        filters: Object
-    },
-    setup(props) {
-        const toaster = createToaster({ /* options */ });
-        const sportId = ref(null);
-        const formActive = ref(false);
-        const listActive = ref(false);
-        const formContent = ref({})
-        const search = ref(props.filters.search);
-        const users = ref([]);
-        const toggleForm = (id = null) => {
-            formActive.value = !formActive.value;
-            sportId.value = null;
-            formContent.value = {};
-            if (id) {
-                sportId.value = id;
-                fetch('/admin/sports/show/' + id).then(res => res.json()).then(data => {
-                    formContent.value = data;
-                })
-            }
-        }
-        const addSport = () => {
-            if(formContent.value === {}){
-                return false;
-            }
-            if (formContent.value) {
-                Inertia.post('/admin/sports/store', formContent.value,);
-                formContent.value = {};
-                formActive.value = false;
-                toaster.success(`Sport Added Successfully`,{position:"top-right"});
-            }
-        }
-        const updateSport = () => {
-            if(formContent.value === {}){
-                return false;
-            }
-            Inertia.put('/admin/sports/update/' + sportId.value, formContent.value, {preserveState: true});
-            formContent.value = {};
-            formActive.value = false;
-            sportId.value = null;
-            toaster.info(`Sport Updated Successfully`,{position:"top-right"});
-        }
-        const deleteSport = id => {
-            Inertia.delete('/admin/sports/delete/' + id);
-            toaster.error(`Sport Deleted Successfully`,{position:"top-right"});
-        }
-        const closeList = () => {
-            listActive.value = false;
-        }
-        const showUser = id => {
-            fetch('/admin/sports/users/' + id).then(res => res.json()).then(data => {
-                users.value = data;
-                listActive.value = true;
-            })
-        }
-        watch(search, value => {
-            Inertia.get('/admin/sports/index', {search: value}, {preserveState: true, replace: true})
+import {createToaster} from "@meforma/vue-toaster";
+
+const props = defineProps({
+    sports: Object,
+    filters: Object
+})
+const toaster = createToaster({ /* options */});
+const sportId = ref(null);
+const formActive = ref(false);
+const listActive = ref(false);
+const formContent = ref({})
+const search = ref(props.filters.search);
+const users = ref([]);
+const toggleForm = (id = null) => {
+    formActive.value = !formActive.value;
+    sportId.value = null;
+    formContent.value = {};
+    if (id) {
+        sportId.value = id;
+        fetch('/admin/sports/' + id).then(res => res.json()).then(data => {
+            formContent.value = data;
         })
-        return {
-            formActive,
-            toggleForm,
-            deleteSport,
-            addSport,
-            sportId,
-            formContent,
-            updateSport,
-            search,
-            showUser,
-            users,
-            listActive,
-            closeList
-        }
     }
 }
+const addSport = () => {
+    if (formContent.value === {}) {
+        return false;
+    }
+    if (formContent.value) {
+        Inertia.post('/admin/sports', formContent.value,);
+        formContent.value = {};
+        formActive.value = false;
+        toaster.success(`Sport Added Successfully`, {position: "top-right"});
+    }
+}
+const updateSport = () => {
+    if (formContent.value === {}) {
+        return false;
+    }
+    Inertia.put('/admin/sports/' + sportId.value, formContent.value, {preserveState: true});
+    formContent.value = {};
+    formActive.value = false;
+    sportId.value = null;
+    toaster.info(`Sport Updated Successfully`, {position: "top-right"});
+}
+const deleteSport = id => {
+    Inertia.delete('/admin/sports/' + id);
+    toaster.error(`Sport Deleted Successfully`, {position: "top-right"});
+}
+const closeList = () => {
+    listActive.value = false;
+}
+const showUser = id => {
+    fetch('/admin/sports/' + id).then(res => res.json()).then(data => {
+        users.value = data;
+        listActive.value = true;
+    })
+}
+watch(search, value => {
+    Inertia.get('/admin/sports', {search: value}, {preserveState: true, replace: true})
+})
 </script>

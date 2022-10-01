@@ -15,14 +15,16 @@ use Illuminate\Support\Facades\Mail;
 class SportSubscription implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     public $sport;
     public $email;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($sport,$email)
+    public function __construct($sport, $email)
     {
         $this->sport = $sport;
         $this->email = $email;

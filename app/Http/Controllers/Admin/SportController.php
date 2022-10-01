@@ -11,10 +11,10 @@ use Inertia\Inertia;
 
 class SportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         return Inertia::render('Admin/Sports/Index', [
-            'sports' => Sport::with('users')->when(request()->input('search'), function ($query, $search) {
+            'sports' => Sport::query()->with('users')->when($request->input('search'), function ($query, $search) {
                 $query->where('title', 'Like', '%' . $search . '%');
             })->active()->get(),
             'filters' => request()->only(['search'])
@@ -44,10 +44,10 @@ class SportController extends Controller
         return redirect()->route('admin.sports.index');
     }
 
-    public function delete(Sport $sport)
+    public function destroy(Sport $sport)
     {
         $sport->status = 0;
-        $sport->Save();
+        $sport->save();
 
         return redirect()->route('admin.sports.index');
     }

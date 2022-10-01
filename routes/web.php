@@ -41,12 +41,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['admin'])->prefix('/admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('dashboard');
         Route::controller(SportController::class)->group(function () {
-            Route::get('/sports/index', 'index')->name('sports.index');
-            Route::post('/sports/store', 'store')->name('sports.store');
-            Route::get('/sports/show/{sport}', 'show')->name('sports.show');
-            Route::put('/sports/update/{sport}', 'update')->name('sports.update');
-            Route::delete('/sports/delete/{sport}', 'delete')->name('sports.delete');
-            Route::get('/sports/users/{sport}', 'users')->name('sports.users');
+            Route::get('/sports', 'index')->name('sports.index');
+            Route::post('/sports', 'store')->name('sports.store');
+            Route::get('/sports/{sport}', 'show')->name('sports.show');
+            Route::put('/sports/{sport}', 'update')->name('sports.update');
+            Route::delete('/sports/{sport}', 'destroy')->name('sports.destroy');
+            Route::get('/sports/{sport}/users', 'users')->name('sports.users');
         });
     });
 });

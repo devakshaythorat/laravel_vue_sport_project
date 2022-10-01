@@ -24,8 +24,8 @@ class SportRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'description' => 'required'
+            'title' => ['required'],
+            'description' => ['required']
         ];
     }
 }
